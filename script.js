@@ -1,5 +1,5 @@
 /* ===== EDIT THESE ===== */
-const CFG = { NAME: "Champ", FROM: "Your big sibling" };
+const CFG = { NAME: "Abhinaw", FROM: "Your big sibling" };
 /* ====================== */
 document.title = "Happy Birthday, " + CFG.NAME + "!";
 document.querySelectorAll("[data-name]").forEach(e => e.textContent = CFG.NAME);
