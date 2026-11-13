@@ -7,10 +7,17 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Cinzel+Decorative:wght@700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 <link rel="stylesheet" href="style.css">
+
+<!-- Libraries: Local first (instant & offline), fallback to CDN -->
+<script src="libs/three.min.js"></script>
+<script>if (typeof THREE === "undefined") { document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>'); }</script>
+
+<script src="libs/gsap.min.js"></script>
+<script>if (typeof gsap === "undefined") { document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"><\/script>'); }</script>
+
+<script src="libs/confetti.min.js"></script>
+<script>if (typeof confetti === "undefined") { document.write('<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"><\/script>'); }</script>
 </head>
 <body>
 
@@ -39,7 +46,7 @@
   <div class="start-stars">✦ ✦ ✦ ✦ ✦</div>
   <div class="crown-wrap">👑</div>
   <h1 class="title-main">Happy<br><span class="grad-text">18th</span><br>Birthday!</h1>
-  <p class="title-sub">A very special message for&nbsp;&nbsp;<span class="name-pill" data-name></span></p>
+  <p class="title-sub">A very special message for&nbsp;&nbsp;<span class="name-pill" data-name>Abhinaw</span></p>
   <div class="ld"><i></i></div>
   <button class="btn" id="go" disabled>Loading your surprise…</button>
   <div class="start-deco">🎂 🎁 🎊 🥳 🎆</div>
@@ -52,10 +59,10 @@
   <section class="step" data-step>
     <div class="panel">
       <div class="step-emoji">🎉</div>
-      <h1>Hey&nbsp;<span data-name></span>!</h1>
+      <h1>Hey&nbsp;<span data-name>Abhinaw</span>!</h1>
       <p class="lead">
         Today isn't just any day — it's the day the world got a whole lot better.
-        You are officially <strong class="highlight">eighteen</strong> now. A new chapter begins! ✨
+        You are officially <strong class="highlight">eighteen</strong> now. A brand new chapter begins! ✨
       </p>
       <p class="sub-lead">I put together something special just for you…</p>
       <button class="btn btn-birthday" data-next>Open your gift 🎁</button>
@@ -66,10 +73,10 @@
   <section class="step" data-step>
     <div class="panel">
       <div class="step-emoji">💌</div>
-      <h2>Happy 18th,&nbsp;<span data-name></span>!</h2>
+      <h2>Happy 18th,&nbsp;<span data-name>Abhinaw</span>!</h2>
       <div class="letter-wrap">
         <p class="text" id="typed"
-           data-text="Eighteen years ago the world got an amazing gift — YOU. Watching you grow from a little kid to this incredible human has been the greatest honour of my life. You have the heart of a champion, the humour of a legend, and the smile that lights up every room. This is your year — go chase every dream without looking back. I am right behind you, always."></p>
+           data-text="Eighteen years ago the world got an amazing gift — YOU. Watching you grow into this incredible person has been the greatest joy. You have the heart of a champion, the humour of a legend, and a smile that lights up every room. This is your year — go chase every dream without looking back. I will always have your back!"></p>
       </div>
       <button class="btn btn-birthday" data-next>Open your birthday loot 🎁</button>
     </div>
@@ -80,30 +87,30 @@
     <div class="panel">
       <div class="step-emoji">🎁</div>
       <h2>Your Birthday Gifts</h2>
-      <p class="hint">Tap a gift to unwrap it!</p>
+      <p class="hint">Tap a card to unwrap your blessing!</p>
       <div class="cards">
         <div class="flip legendary" tabindex="0">
           <div class="flip-in">
             <div class="face"><span class="card-icon">👑</span><b>Legendary</b><h3>Pure Courage</h3></div>
-            <div class="face back">At 18 you now own your story. Write it boldly — no fear, no limits, no regrets.</div>
+            <div class="face back">At 18 you now own your story. Write it boldly — no fear, no limits, no regrets!</div>
           </div>
         </div>
         <div class="flip epic" tabindex="0">
           <div class="flip-in">
             <div class="face"><span class="card-icon">💎</span><b>Epic</b><h3>Big Heart</h3></div>
-            <div class="face back">You are kind to everyone around you — that is a rare, real superpower. Never lose it.</div>
+            <div class="face back">You are kind to everyone around you — that is a rare, real superpower. Never lose it!</div>
           </div>
         </div>
         <div class="flip rare" tabindex="0">
           <div class="flip-in">
             <div class="face"><span class="card-icon">⭐</span><b>Rare</b><h3>Unstoppable</h3></div>
-            <div class="face back">Every time life knocked you down, you got back up stronger. That fire is 100% yours.</div>
+            <div class="face back">Every time life challenged you, you bounced back stronger. That fire is 100% yours!</div>
           </div>
         </div>
         <div class="flip common" tabindex="0">
           <div class="flip-in">
             <div class="face"><span class="card-icon">🫂</span><b>Forever</b><h3>Family Love</h3></div>
-            <div class="face back">Being your sibling is my greatest blessing. Happy 18th, my champion! I love you.</div>
+            <div class="face back">Being your sibling is my greatest blessing. Happy 18th, champ! I love you always!</div>
           </div>
         </div>
       </div>
@@ -116,7 +123,7 @@
     <div class="panel panel-wide">
       <div class="step-emoji">📸</div>
       <h2>Our Memories</h2>
-      <p class="hint">Swipe or tap the arrows to go through our special moments</p>
+      <p class="hint">Tap the arrows or swipe to look back on special moments</p>
 
       <div class="slideshow-wrapper">
         <!-- Slide 1 -->
@@ -126,16 +133,16 @@
               <img src="brother1.jpg" alt="Memory 1" class="slide-img" onerror="this.parentElement.classList.add('no-photo')">
               <div class="photo-placeholder">
                 <span>🏆</span>
-                <p>Add <strong>brother1.jpg</strong></p>
+                <p>Photo: <strong>brother1.jpg</strong></p>
               </div>
               <div class="frame-shine"></div>
             </div>
             <div class="slide-caption">
-              <div class="caption-badge">❤️ Slide 1 of 2</div>
+              <div class="caption-badge">❤️ Memory 1</div>
               <h3 class="caption-title">My Champion! 🏆</h3>
               <p class="caption-text">
-                You are not just my little brother — you are my best friend, my teammate, my pride.
-                No matter the game, no matter the day, you always bring energy, laughter and heart. 
+                You are not just my brother — you are my teammate, my friend, and my pride.
+                No matter what, you always bring energy, laughter, and heart. 
                 I am so proud of everything you are, every single day. 🌟
               </p>
               <div class="caption-tags">
@@ -155,17 +162,17 @@
               <img src="brother2.jpg" alt="Memory 2" class="slide-img" onerror="this.parentElement.classList.add('no-photo')">
               <div class="photo-placeholder">
                 <span>⭐</span>
-                <p>Add <strong>brother2.jpg</strong></p>
+                <p>Photo: <strong>brother2.jpg</strong></p>
               </div>
               <div class="frame-shine"></div>
             </div>
             <div class="slide-caption">
-              <div class="caption-badge">💛 Slide 2 of 2</div>
+              <div class="caption-badge">💛 Memory 2</div>
               <h3 class="caption-title">Little Star ⭐</h3>
               <p class="caption-text">
-                Every great story needs a hero — and you are mine. Your smile can fix the worst day,
-                your courage inspires everyone around you. Keep shining, little bro. 
-                The whole world is waiting for you. 🚀
+                Every great journey has a hero — and you are ours. Your smile can fix the hardest day,
+                and your spirit inspires everyone around you. Keep shining, champ. 
+                The whole world is waiting for you! 🚀
               </p>
               <div class="caption-tags">
                 <span class="tag">😄 Smile</span>
@@ -203,13 +210,13 @@
           <div class="ph-badge">18</div>
         </div>
         <div class="stats-wrap">
-          <div class="stat-title">Abhinaw's Stats</div>
+          <div class="stat-title">Abhinaw's Profile</div>
           <ul class="stats">
             <li>Swag Level<span style="--v:100%"></span></li>
             <li>Kindness<span style="--v:98%"></span></li>
             <li>Laughter<span style="--v:100%"></span></li>
             <li>Bravery<span style="--v:95%"></span></li>
-            <li>Sibling Goals<span style="--v:100%"></span></li>
+            <li>Sibling Bond<span style="--v:100%"></span></li>
           </ul>
         </div>
       </div>
@@ -223,17 +230,17 @@
       <div class="confetti-line">🎊 🎉 🎊 🎉 🎊</div>
       <div class="age-badge-big">18</div>
       <h1 class="booyah">HAPPY<br>BIRTHDAY!</h1>
-      <h2 class="finale-sub">Welcome to adulthood,&nbsp;<span data-name></span>! 🥳</h2>
+      <h2 class="finale-sub">Welcome to adulthood,&nbsp;<span data-name>Abhinaw</span>! 🥳</h2>
       <div class="wish-box">
         <p class="text">
-          May this year bring you new phones, shiny moments, big wins, 
-          wild adventures and everything your heart dreams of.
-          You deserve the absolute world. 
-          <strong>Go get it, champ! 🌍</strong>
+          May this 18th year bring you new phones, shiny watches, epic wins,
+          wild adventures, and everything your heart dreams of.
+          You deserve the absolute world.
+          <br><strong>Go conquer it, champ! 🌍</strong>
         </p>
       </div>
       <div class="cake-wrap">🎂</div>
-      <p class="sign">With all my love — <span data-from></span> 💛</p>
+      <p class="sign">With love — <span data-from>Ujjawal Singh</span> 💛</p>
       <button class="btn btn-big" id="celebrate">Celebrate&nbsp;🎉</button>
     </div>
   </section>
