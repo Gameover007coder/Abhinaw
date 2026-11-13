@@ -160,9 +160,16 @@ function victory() {
   mus.gain.setTargetAtTime(.55, t + .3, .5);
 }
 function setLevel(n) { lvl = n; }
-const muteBtn = document.getElementById("mute"); muteBtn.textContent = muted ? "🔇" : "🔊";
-muteBtn.onclick = () => { muted = !muted; muteBtn.textContent = muted ? "🔇" : "🔊"; try { localStorage.setItem("muted", muted ? 1 : 0); } catch (e) {}
-  if (master) master.gain.setTargetAtTime(muted ? 0 : .7, AC.currentTime, .05); };
+const muteBtn = document.getElementById("mute");
+if (muteBtn) {
+  muteBtn.textContent = muted ? "🔇" : "🔊";
+  muteBtn.onclick = () => {
+    muted = !muted;
+    muteBtn.textContent = muted ? "🔇" : "🔊";
+    try { localStorage.setItem("muted", muted ? 1 : 0); } catch (e) {}
+    if (master && AC) master.gain.setTargetAtTime(muted ? 0 : .7, AC.currentTime, .05);
+  };
+}
 document.addEventListener("visibilitychange", () => { if (!AC) return; document.hidden ? AC.suspend() : AC.resume(); });
 
 /* ---------- PHOTO SLIDESHOW LOGIC ---------- */
