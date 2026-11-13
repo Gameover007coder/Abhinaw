@@ -13,7 +13,12 @@ document.querySelectorAll("[data-from]").forEach(e => e.textContent = CFG.FROM);
   const ctx = canvas.getContext("2d");
   let W, H, particles = [];
 
-  function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+  function resize() {
+    W = canvas.width = innerWidth;
+    H = canvas.height = innerHeight;
+    canvas.style.width = innerWidth + "px";
+    canvas.style.height = innerHeight + "px";
+  }
   resize();
   addEventListener("resize", resize);
 
@@ -157,8 +162,12 @@ function place(g) {
 for (let i = 0; i < 15; i++) {
   const g = new THREE.Group();
   g.add(new THREE.Mesh(cardGeo, cardMat));
-  const sc = screen(cardTextures[i % 3], 5, 6.4, .16);
-  sc.position.z = .16; g.add(sc);
+  const sc = new THREE.Mesh(
+    new THREE.PlaneGeometry(5, 6.4),
+    new THREE.MeshBasicMaterial({ map: cardTextures[i % 3] })
+  );
+  sc.position.z = .17;
+  g.add(sc);
   place(g);
 }
 
@@ -276,10 +285,10 @@ function beat(s, t) {
   if (lvl >= 2 && MELODY[s]) tone(t, hz(MELODY[s]), .12, "sine", .05, mus);
   if (lvl >= 3 && (s === 4 || s === 12)) noise(t, .14, .18, 1800, "bandpass", mus);
 }
-const ok = () => AC && AC.state === "running";
-const blip = () => ok() && tone(AC.currentTime, 880, .06, "sine", .12, sfx, 1400);
-const whoosh = () => ok() && noise(AC.currentTime, .6, .3, 400, "bandpass", sfx, 4000);
-const loot = () => { if (!ok()) return; [72, 76, 79, 83, 86].forEach((n, i) => tone(AC.currentTime + i * .065, hz(n), .2, "triangle", .18, sfx)); };
+const ok = () => AC && AC.state === "running" && sfx;
+const blip = () => { try { ok() && tone(AC.currentTime, 880, .06, "sine", .12, sfx, 1400); } catch(e){} };
+const whoosh = () => { try { ok() && noise(AC.currentTime, .6, .3, 400, "bandpass", sfx, 4000); } catch(e){} };
+const loot = () => { if (!ok()) return; try { [72, 76, 79, 83, 86].forEach((n, i) => tone(AC.currentTime + i * .065, hz(n), .2, "triangle", .18, sfx)); } catch(e){} };
 function victory() {
   if (!ok()) return;
   const t0 = AC.currentTime, B = .38;
@@ -359,14 +368,23 @@ gsap.to(ld, {
 
 go.onclick = () => {
   initAudio();
-  if (AC.state === "suspended") AC.resume();
-  whoosh();
-  gsap.to("#start", { opacity: 0, scale: .97, duration: .9, ease: "power2.in",
-    onComplete: () => document.getElementById("start").hidden = true });
-  document.getElementById("hud").hidden = false;
-  document.getElementById("stage").hidden = false;
-  gsap.fromTo(C.position, { z: 70 }, { z: 30, duration: 2.5, ease: "power3.out" });
-  goTo(0);
+  // Resume audio context (required by browsers after user gesture)
+  const startFlow = () => {
+    whoosh();
+    gsap.to("#start", {
+      opacity: 0, scale: .97, transformOrigin: "50% 50%", duration: .9, ease: "power2.in",
+      onComplete: () => document.getElementById("start").hidden = true
+    });
+    document.getElementById("hud").hidden = false;
+    document.getElementById("stage").hidden = false;
+    gsap.fromTo(C.position, { z: 70 }, { z: 30, duration: 2.5, ease: "power3.out" });
+    goTo(0);
+  };
+  if (AC.state === "suspended") {
+    AC.resume().then(startFlow);
+  } else {
+    startFlow();
+  }
 };
 
 function typeText(el) {
