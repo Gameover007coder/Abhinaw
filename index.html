@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="bg"></div>
+<div id="vig"></div>
+<div id="bar"></div>
+
+<header id="hud" hidden>
+  <div id="alive">ALIVE <b>50</b></div>
+  <button id="mute" aria-label="Toggle sound">🔊</button>
+</header>
+
+<!-- TITLE SCREEN -->
+<section id="start">
+  <h1>Birthday<br>Royale</h1>
+  <p>Squad: <span data-name></span></p>
+  <div class="ld"><i></i></div>
+  <button class="btn" id="go" disabled>Loading…</button>
+</section>
+
+<main id="stage" hidden>
+
+  <!-- STEP 0: Intro -->
+  <section class="step" data-step>
+    <div class="panel">
+      <h1 data-name-title>Hey <span data-name></span>!</h1>
+      <p class="lead">A secret mission just dropped for you. Ready to land?</p>
+      <button class="btn" data-next>Start mission</button>
+    </div>
+  </section>
+
+  <!-- STEP 1: Birthday Message -->
+  <section class="step" data-step>
+    <div class="panel">
+      <h2>Happy Birthday, <span data-name></span>!</h2>
+      <p class="text" id="typed" data-text="Today is your day, and the whole squad is cheering for you. You make every game, every joke and every ordinary day more fun. Keep levelling up, champ, and I will always have your back."></p>
+      <button class="btn" data-next>Open your loot</button>
+    </div>
+  </section>
+
+  <!-- STEP 2: Loot Crates -->
+  <section class="step" data-step>
+    <div class="panel">
+      <h2>Your birthday loot</h2>
+      <p class="hint">Tap a crate to open it</p>
+      <div class="cards">
+        <div class="flip legendary" tabindex="0"><div class="flip-in"><div class="face"><b>Legendary</b><h3>Big heart</h3></div><div class="face back">You are kind to everyone, even when you are winning.</div></div></div>
+        <div class="flip epic" tabindex="0"><div class="flip-in"><div class="face"><b>Epic</b><h3>Clutch mode</h3></div><div class="face back">You never give up. Tough levels are just warm-ups for you.</div></div></div>
+        <div class="flip rare" tabindex="0"><div class="flip-in"><div class="face"><b>Rare</b><h3>Big smile</h3></div><div class="face back">Your laugh can fix the worst day.</div></div></div>
+        <div class="flip common" tabindex="0"><div class="flip-in"><div class="face"><b>Forever</b><h3>Squad goals</h3></div><div class="face back">Being your sibling is my best drop ever.</div></div></div>
+      </div>
+      <button class="btn" data-next>See memories</button>
+    </div>
+  </section>
+
+  <!-- STEP 3: PHOTO MEMORIES SLIDESHOW (NEW) -->
+  <section class="step" data-step id="memory-step">
+    <div class="panel panel-wide">
+      <h2>📸 Our Memories</h2>
+      <p class="hint">Special moments just for you</p>
+
+      <div class="slideshow-wrapper">
+        <!-- Slide 1 -->
+        <div class="slide active" id="slide-1">
+          <div class="slide-inner">
+            <div class="photo-frame">
+              <img src="brother1.jpg" alt="Memory 1" class="slide-img" onerror="this.parentElement.classList.add('no-photo')">
+              <div class="photo-placeholder">
+                <span>🏆</span>
+                <p>Add <strong>brother1.jpg</strong></p>
+              </div>
+            </div>
+            <div class="slide-caption">
+              <div class="caption-badge">❤️ Slide 1 of 2</div>
+              <h3 class="caption-title">My Champion!</h3>
+              <p class="caption-text">
+                You are not just my little brother — you are my best teammate.
+                No matter the game, no matter the day, you always bring the energy,
+                the laughs, and the heart. I am so proud of you, every single day. 🌟
+              </p>
+              <div class="caption-tags">
+                <span class="tag">🎮 Gamer</span>
+                <span class="tag">💪 Legend</span>
+                <span class="tag">🔥 Fire</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="slide" id="slide-2">
+          <div class="slide-inner">
+            <div class="photo-frame">
+              <img src="brother2.jpg" alt="Memory 2" class="slide-img" onerror="this.parentElement.classList.add('no-photo')">
+              <div class="photo-placeholder">
+                <span>⭐</span>
+                <p>Add <strong>brother2.jpg</strong></p>
+              </div>
+            </div>
+            <div class="slide-caption">
+              <div class="caption-badge">💛 Slide 2 of 2</div>
+              <h3 class="caption-title">My Little Star ⭐</h3>
+              <p class="caption-text">
+                Every great adventure needs a hero — and you are mine.
+                Your smile lights up every room, your courage inspires everyone around you.
+                Keep shining bright, little bro. The whole world is yours to conquer! 🚀
+              </p>
+              <div class="caption-tags">
+                <span class="tag">😄 Smile</span>
+                <span class="tag">🚀 Unstoppable</span>
+                <span class="tag">👑 King</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide controls -->
+        <div class="slide-controls">
+          <button class="slide-btn" id="slide-prev" aria-label="Previous">&#8592;</button>
+          <div class="slide-dots">
+            <span class="dot active" data-slide="0"></span>
+            <span class="dot" data-slide="1"></span>
+          </div>
+          <button class="slide-btn" id="slide-next" aria-label="Next">&#8594;</button>
+        </div>
+      </div>
+
+      <button class="btn" data-next>See your player card</button>
+    </div>
+  </section>
+
+  <!-- STEP 4: Player Card -->
+  <section class="step" data-step>
+    <div class="panel">
+      <h2>Player card</h2>
+      <div class="pcard">
+        <div class="ph">🎮<img src="brother1.jpg" alt="Birthday boy" onerror="this.remove()"></div>
+        <ul class="stats">
+          <li>Gaming skills<span style="--v:98%"></span></li>
+          <li>Swag<span style="--v:100%"></span></li>
+          <li>Appetite<span style="--v:100%"></span></li>
+          <li>Being cute<span style="--v:90%"></span></li>
+        </ul>
+      </div>
+      <button class="btn" data-next>Final result</button>
+    </div>
+  </section>
+
+  <!-- STEP 5: BOOYAH finale -->
+  <section class="step" data-step>
+    <div class="panel win">
+      <h1 class="booyah">BOOYAH!</h1>
+      <h2>You survived another year!</h2>
+      <p class="text">May this year bring you new phones, shiny watches, big wins and everything you dream of. Happy Birthday, <span data-name></span>!</p>
+      <p class="sign">– <span data-from></span></p>
+      <button class="btn" id="celebrate">Celebrate 🎉</button>
+    </div>
+  </section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
