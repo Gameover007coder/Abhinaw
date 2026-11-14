@@ -1,252 +1,538 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Happy Birthday Abhinaw 🎂</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Cinzel+Decorative:wght@700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Happy 18th Birthday Abhinaw! ✨</title>
 
-<!-- Libraries: Local first (instant & offline), fallback to CDN -->
-<script src="libs/three.min.js"></script>
-<script>if (typeof THREE === "undefined") { document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>'); }</script>
+  <!-- Google Fonts: Modern, elegant, celebratory -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
 
-<script src="libs/gsap.min.js"></script>
-<script>if (typeof gsap === "undefined") { document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"><\/script>'); }</script>
+  <link rel="stylesheet" href="style.css">
 
-<script src="libs/confetti.min.js"></script>
-<script>if (typeof confetti === "undefined") { document.write('<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"><\/script>'); }</script>
+  <!-- Confetti library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 </head>
 <body>
 
-<!-- Floating particles canvas -->
-<canvas id="particles"></canvas>
-<div id="bg"></div>
-<div id="vig"></div>
-<div id="bar"></div>
+  <!-- Floating animated background elements -->
+  <canvas id="particles-canvas"></canvas>
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
 
-<!-- Floating balloons -->
-<div class="balloon-container" id="balloons">
-  <div class="balloon b1">🎈</div>
-  <div class="balloon b2">🎈</div>
-  <div class="balloon b3">🎉</div>
-  <div class="balloon b4">🎈</div>
-  <div class="balloon b5">🎈</div>
-</div>
+  <!-- Drifting celebratory balloons -->
+  <div class="balloons-layer" aria-hidden="true">
+    <div class="balloon b-gold" style="left: 7%; animation-delay: 0s; animation-duration: 12s;">🎈</div>
+    <div class="balloon b-blue" style="left: 22%; animation-delay: 2.5s; animation-duration: 10s;">🎈</div>
+    <div class="balloon b-rose" style="left: 50%; animation-delay: 1s; animation-duration: 14s;">✨</div>
+    <div class="balloon b-gold" style="left: 76%; animation-delay: 3.5s; animation-duration: 11s;">🎈</div>
+    <div class="balloon b-blue" style="left: 91%; animation-delay: 0.8s; animation-duration: 13s;">🎈</div>
+  </div>
 
-<!-- HUD -->
-<header id="hud" hidden>
-  <div id="age-pill">🎂 TURNING <b>18</b></div>
-</header>
+  <!-- Top Navigation & Controls -->
+  <header class="top-nav" id="top-nav" hidden>
+    <div class="milestone-badge">
+      <span class="badge-dot"></span>
+      <span>CHAPTER 18 &bull; ABHINAW</span>
+    </div>
 
-<!-- ═══════════════════ TITLE SCREEN ═══════════════════ -->
-<section id="start">
-  <div class="start-stars">✦ ✦ ✦ ✦ ✦</div>
-  <div class="crown-wrap">👑</div>
-  <h1 class="title-main">Happy<br><span class="grad-text">18th</span><br>Birthday!</h1>
-  <p class="title-sub">A very special message for&nbsp;&nbsp;<span class="name-pill" data-name>Abhinaw</span></p>
-  <div class="ld"><i></i></div>
-  <button class="btn" id="go" disabled>Loading your surprise…</button>
-  <div class="start-deco">🎂 🎁 🎊 🥳 🎆</div>
-</section>
+    <!-- Step Progress Dots -->
+    <div class="nav-dots" id="nav-dots">
+      <span class="nav-dot active" data-go="0" title="Welcome"></span>
+      <span class="nav-dot" data-go="1" title="Heartfelt Letter"></span>
+      <span class="nav-dot" data-go="2" title="Golden Wishes"></span>
+      <span class="nav-dot" data-go="3" title="Photo Gallery"></span>
+      <span class="nav-dot" data-go="4" title="Make a Wish"></span>
+      <span class="nav-dot" data-go="5" title="Grand Finale"></span>
+    </div>
 
-<!-- ═══════════════════ MAIN STAGE ═══════════════════ -->
-<main id="stage" hidden>
+    <!-- Music Indicator (always on) -->
+    <div class="music-indicator" aria-label="Music playing" title="🎵 Music Playing">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </div>
+  </header>
 
-  <!-- STEP 0: Welcome -->
-  <section class="step" data-step>
-    <div class="panel">
-      <div class="step-emoji">🎉</div>
-      <h1>Hey&nbsp;<span data-name>Abhinaw</span>!</h1>
-      <p class="lead">
-        Today isn't just any day — it's the day the world got a whole lot better.
-        You are officially <strong class="highlight">eighteen</strong> now. A brand new chapter begins! ✨
+  <!-- Progress Bar Line -->
+  <div class="story-progress-bar" id="progress-bar"></div>
+
+  <!-- ═══════════════════ STAGE 0: ENTRANCE SCREEN ═══════════════════ -->
+  <section class="screen entrance-screen" id="screen-start">
+    <div class="entrance-card">
+      <div class="crown-icon">👑</div>
+      <div class="mini-tag">A MILESTONE CELEBRATION</div>
+      
+      <h1 class="main-title">
+        Happy <span class="gold-gradient">18th</span> Birthday,
+        <br><span class="name-highlight" data-name>Abhinaw</span>!
+      </h1>
+
+      <p class="entrance-desc">
+        Today marks the dawn of adulthood, grand adventures, and unforgettable memories.
+        A special surprise awaits you inside.
       </p>
-      <p class="sub-lead">I put together something special just for you…</p>
-      <button class="btn btn-birthday" data-next>Open your gift 🎁</button>
-    </div>
-  </section>
 
-  <!-- STEP 1: Birthday Message -->
-  <section class="step" data-step>
-    <div class="panel">
-      <div class="step-emoji">💌</div>
-      <h2>Happy 18th,&nbsp;<span data-name>Abhinaw</span>!</h2>
-      <div class="letter-wrap">
-        <p class="text" id="typed"
-           data-text="Eighteen years ago the world got an amazing gift — YOU. Watching you grow into this incredible person has been the greatest joy. You have the heart of a champion, the humour of a legend, and a smile that lights up every room. This is your year — go chase every dream without looking back. I will always have your back!"></p>
-      </div>
-      <button class="btn btn-birthday" data-next>Open your birthday loot 🎁</button>
-    </div>
-  </section>
-
-  <!-- STEP 2: Gift Cards (loot crates but birthday-themed) -->
-  <section class="step" data-step>
-    <div class="panel">
-      <div class="step-emoji">🎁</div>
-      <h2>Your Birthday Gifts</h2>
-      <p class="hint">Tap a card to unwrap your blessing!</p>
-      <div class="cards">
-        <div class="flip legendary" tabindex="0">
-          <div class="flip-in">
-            <div class="face"><span class="card-icon">👑</span><b>Legendary</b><h3>Pure Courage</h3></div>
-            <div class="face back">At 18 you now own your story. Write it boldly — no fear, no limits, no regrets!</div>
-          </div>
+      <!-- Floating mini preview polaroids for boyish aesthetic -->
+      <div class="floating-polaroids-decor" aria-hidden="true">
+        <div class="mini-polaroid p1 face-focus-1">
+          <img src="photo1.jpg" alt="Preview 1">
         </div>
-        <div class="flip epic" tabindex="0">
-          <div class="flip-in">
-            <div class="face"><span class="card-icon">💎</span><b>Epic</b><h3>Big Heart</h3></div>
-            <div class="face back">You are kind to everyone around you — that is a rare, real superpower. Never lose it!</div>
-          </div>
+        <div class="mini-polaroid p2 face-focus-5">
+          <img src="photo5.jpg" alt="Preview 2">
         </div>
-        <div class="flip rare" tabindex="0">
-          <div class="flip-in">
-            <div class="face"><span class="card-icon">⭐</span><b>Rare</b><h3>Unstoppable</h3></div>
-            <div class="face back">Every time life challenged you, you bounced back stronger. That fire is 100% yours!</div>
-          </div>
-        </div>
-        <div class="flip common" tabindex="0">
-          <div class="flip-in">
-            <div class="face"><span class="card-icon">🫂</span><b>Forever</b><h3>Family Love</h3></div>
-            <div class="face back">Being your sibling is my greatest blessing. Happy 18th, champ! I love you always!</div>
-          </div>
-        </div>
-      </div>
-      <button class="btn btn-birthday" data-next>See our memories 📸</button>
-    </div>
-  </section>
-
-  <!-- STEP 3: Photo Memories Slideshow -->
-  <section class="step" data-step id="memory-step">
-    <div class="panel panel-wide">
-      <div class="step-emoji">📸</div>
-      <h2>Our Memories</h2>
-      <p class="hint">Tap the arrows or swipe to look back on special moments</p>
-
-      <div class="slideshow-wrapper">
-        <!-- Slide 1 -->
-        <div class="slide active" id="slide-1">
-          <div class="slide-inner">
-            <div class="photo-frame">
-              <img src="brother1.jpeg" alt="Memory 1" class="slide-img" onerror="this.parentElement.classList.add('no-photo')">
-              <div class="photo-placeholder">
-                <span>🏆</span>
-                <p>Photo: <strong>brother1.jpeg</strong></p>
-              </div>
-              <div class="frame-shine"></div>
-            </div>
-            <div class="slide-caption">
-              <div class="caption-badge">❤️ Memory 1</div>
-              <h3 class="caption-title">My Champion! 🏆</h3>
-              <p class="caption-text">
-                You are not just my brother — you are my teammate, my friend, and my pride.
-                No matter what, you always bring energy, laughter, and heart. 
-                I am so proud of everything you are, every single day. 🌟
-              </p>
-              <div class="caption-tags">
-                <span class="tag">🎮 Gamer</span>
-                <span class="tag">💪 Legend</span>
-                <span class="tag">🔥 Fire</span>
-                <span class="tag">👑 King</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Slide 2 -->
-        <div class="slide" id="slide-2">
-          <div class="slide-inner">
-            <div class="photo-frame">
-              <img src="brother2.jpeg" alt="Memory 2" class="slide-img" onerror="this.parentElement.classList.add('no-photo')">
-              <div class="photo-placeholder">
-                <span>⭐</span>
-                <p>Photo: <strong>brother2.jpeg</strong></p>
-              </div>
-              <div class="frame-shine"></div>
-            </div>
-            <div class="slide-caption">
-              <div class="caption-badge">💛 Memory 2</div>
-              <h3 class="caption-title">Little Star ⭐</h3>
-              <p class="caption-text">
-                Every great journey has a hero — and you are ours. Your smile can fix the hardest day,
-                and your spirit inspires everyone around you. Keep shining, champ. 
-                The whole world is waiting for you! 🚀
-              </p>
-              <div class="caption-tags">
-                <span class="tag">😄 Smile</span>
-                <span class="tag">🚀 Unstoppable</span>
-                <span class="tag">🌙 Dreamer</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Slide controls -->
-        <div class="slide-controls">
-          <button class="slide-btn" id="slide-prev" aria-label="Previous">&#8592;</button>
-          <div class="slide-dots">
-            <span class="dot active" data-slide="0"></span>
-            <span class="dot" data-slide="1"></span>
-          </div>
-          <button class="slide-btn" id="slide-next" aria-label="Next">&#8594;</button>
+        <div class="mini-polaroid p3 face-focus-2">
+          <img src="photo2.jpg" alt="Preview 3">
         </div>
       </div>
 
-      <button class="btn btn-birthday" data-next>See your 18th-birthday card 🎂</button>
-    </div>
-  </section>
-
-  <!-- STEP 4: Birthday Card / Stats -->
-  <section class="step" data-step>
-    <div class="panel">
-      <div class="step-emoji">🎂</div>
-      <h2>The Birthday Legend</h2>
-      <div class="pcard">
-        <div class="ph">
-          <div class="ph-bg-ring"></div>
-          🥳<img src="brother1.jpeg" alt="Birthday boy" onerror="this.remove()">
-          <div class="ph-badge">18</div>
-        </div>
-        <div class="stats-wrap">
-          <div class="stat-title">Abhinaw's Profile</div>
-          <ul class="stats">
-            <li>Swag Level<span style="--v:100%"></span></li>
-            <li>Kindness<span style="--v:98%"></span></li>
-            <li>Laughter<span style="--v:100%"></span></li>
-            <li>Bravery<span style="--v:95%"></span></li>
-            <li>Sibling Bond<span style="--v:100%"></span></li>
-          </ul>
-        </div>
+      <div class="entrance-action">
+        <button class="primary-btn pulse-glow" id="btn-enter">
+          <span>Unwrap Your Surprise</span>
+          <span class="btn-arrow">🎁</span>
+        </button>
       </div>
-      <button class="btn btn-birthday" data-next>See the grand finale 🎆</button>
+
+      <div class="from-tag">
+        Crafted with love by <strong data-from>Ujjawal Singh</strong> 💛
+      </div>
     </div>
   </section>
 
-  <!-- STEP 5: Grand Finale -->
-  <section class="step" data-step>
-    <div class="panel win">
-      <div class="confetti-line">🎊 🎉 🎊 🎉 🎊</div>
-      <div class="age-badge-big">18</div>
-      <h1 class="booyah">HAPPY<br>BIRTHDAY!</h1>
-      <h2 class="finale-sub">Welcome to adulthood,&nbsp;<span data-name>Abhinaw</span>! 🥳</h2>
-      <div class="wish-box">
-        <p class="text">
-          May this 18th year bring you new phones, shiny watches, epic wins,
-          wild adventures, and everything your heart dreams of.
-          You deserve the absolute world.
-          <br><strong>Go conquer it, champ! 🌍</strong>
+  <!-- ═══════════════════ MAIN SURPRISE CONTAINER ═══════════════════ -->
+  <main class="main-experience" id="main-experience" hidden>
+
+    <!-- STEP 0: Warm Welcome -->
+    <section class="story-step" data-step="0">
+      <div class="glass-card">
+        <div class="card-icon-pill">🎉</div>
+        <span class="step-num">MILESTONE 18</span>
+        <h2 class="section-title">Welcome to Adulthood, <span class="name-gradient" data-name>Abhinaw</span>!</h2>
+        <div class="gold-divider"></div>
+        <p class="story-lead">
+          Eighteen years of laughter, growth, and brotherhood have led to this moment.
+          You are officially stepping into the most exciting chapter of your life!
         </p>
+        <p class="story-sub">
+          The choices are yours, the future is bright, and the entire world is waiting for your magic.
+        </p>
+        <div class="action-wrap">
+          <button class="primary-btn" data-next>
+            <span>Read Your Special Letter</span>
+            <span class="btn-arrow">💌</span>
+          </button>
+        </div>
       </div>
-      <div class="cake-wrap">🎂</div>
-      <p class="sign">With love — <span data-from>Ujjawal Singh</span> 💛</p>
-      <button class="btn btn-big" id="celebrate">Celebrate&nbsp;🎉</button>
+    </section>
+
+    <!-- STEP 1: Heartfelt Letter -->
+    <section class="story-step" data-step="1">
+      <div class="glass-card letter-card">
+        <div class="card-icon-pill">💌</div>
+        <span class="step-num">A NOTE FROM THE HEART</span>
+        <h2 class="section-title">To My Brother & Champion</h2>
+        
+        <div class="letter-paper">
+          <div class="letter-stamp">18th &bull; OFFICIAL</div>
+          <p class="letter-text" id="typewriter-text" data-text="Watching you grow into the incredible, kind-hearted, and courageous young man you are today has been one of life's greatest joys. You bring genuine happiness and positive energy everywhere you go. At 18, you hold the pen to your own destiny — dream without limits, live fearlessly, and always remember that I will be right here cheering you on, every single step of the way."></p>
+        </div>
+
+        <div class="action-wrap">
+          <button class="primary-btn" data-next>
+            <span>Reveal Your Golden Blessings</span>
+            <span class="btn-arrow">✨</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2: Golden Blessings (Interactive Flip Cards) -->
+    <section class="story-step" data-step="2">
+      <div class="glass-card wide-card">
+        <div class="card-icon-pill">🌟</div>
+        <span class="step-num">WISHES & PILLARS</span>
+        <h2 class="section-title">Four Pillars for Your 18th Year</h2>
+        <p class="card-subtitle">Tap each card to reveal the special blessing inside</p>
+
+        <div class="blessings-grid">
+          <!-- Card 1 -->
+          <div class="flip-card" tabindex="0">
+            <div class="flip-card-inner">
+              <div class="flip-card-front card-freedom">
+                <span class="card-emoji">🚀</span>
+                <h3>Boundless Ambition</h3>
+                <p class="front-hint">Tap to unwrap</p>
+              </div>
+              <div class="flip-card-back">
+                <span class="card-emoji-sm">⭐</span>
+                <h4>Dream Big</h4>
+                <p>At 18, the world is wide open. Chase your highest goals with relentless courage. You have what it takes!</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="flip-card" tabindex="0">
+            <div class="flip-card-inner">
+              <div class="flip-card-front card-kindness">
+                <span class="card-emoji">💎</span>
+                <h3>Golden Heart</h3>
+                <p class="front-hint">Tap to unwrap</p>
+              </div>
+              <div class="flip-card-back">
+                <span class="card-emoji-sm">💙</span>
+                <h4>True Strength</h4>
+                <p>Your kindness and respect for those around you is a rare, magnetic superpower. Keep shining with integrity!</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="flip-card" tabindex="0">
+            <div class="flip-card-inner">
+              <div class="flip-card-front card-joy">
+                <span class="card-emoji">⚡</span>
+                <h3>Unmatched Energy</h3>
+                <p class="front-hint">Tap to unwrap</p>
+              </div>
+              <div class="flip-card-back">
+                <span class="card-emoji-sm">🔥</span>
+                <h4>Endless Smiles</h4>
+                <p>May your days be packed with epic road trips, music, laughter, loyal friendships, and pure good vibes!</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="flip-card" tabindex="0">
+            <div class="flip-card-inner">
+              <div class="flip-card-front card-brother">
+                <span class="card-emoji">🫂</span>
+                <h3>Brotherhood Forever</h3>
+                <p class="front-hint">Tap to unwrap</p>
+              </div>
+              <div class="flip-card-back">
+                <span class="card-emoji-sm">👑</span>
+                <h4>Always Got Your Back</h4>
+                <p>Through every high and low, no matter where life leads us, you'll always have a brother standing with you.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="action-wrap">
+          <button class="primary-btn" data-next>
+            <span>Explore Our Memories (6 Photos)</span>
+            <span class="btn-arrow">📸</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 3: Memories Photo Gallery (All 6 images animated) -->
+    <section class="story-step" data-step="3">
+      <div class="glass-card wide-card gallery-step-card">
+        <div class="card-icon-pill">📸</div>
+        <span class="step-num">VISUAL JOURNEY</span>
+        <h2 class="section-title">Moments That Matter Most</h2>
+        <p class="card-subtitle">Swipe or tap arrows to look back on our favourite memories &bull; Tap photo to zoom</p>
+
+        <!-- Carousel Container -->
+        <div class="carousel-container">
+          <button class="carousel-btn prev-btn" id="car-prev" aria-label="Previous Slide">&#10094;</button>
+
+          <div class="carousel-track" id="car-track">
+
+            <!-- Slide 1: photo1.jpg -->
+            <div class="carousel-slide active" data-index="0">
+              <div class="polaroid-frame face-focus-1" data-full="photo1.jpg" data-index="0">
+                <div class="img-wrapper">
+                  <img src="photo1.jpg" alt="Abhinaw Memory 1" loading="lazy">
+                  <span class="zoom-badge">🔍 View Full Photo</span>
+                </div>
+                <div class="polaroid-meta">
+                  <div class="meta-top">
+                    <span class="photo-tag">❤️ Memory 1 of 6</span>
+                    <span class="tap-hint">Tap photo to zoom ↗</span>
+                  </div>
+                  <h3 class="photo-caption">The Million Dollar Smile</h3>
+                  <p class="photo-subtext">That radiant smile and unmatched energy that brightens up every single room. Always stay this joyful, brother!</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 2: photo2.jpg -->
+            <div class="carousel-slide" data-index="1">
+              <div class="polaroid-frame face-focus-2" data-full="photo2.jpg" data-index="1">
+                <div class="img-wrapper">
+                  <img src="photo2.jpg" alt="Abhinaw Memory 2" loading="lazy">
+                  <span class="zoom-badge">🔍 View Full Photo</span>
+                </div>
+                <div class="polaroid-meta">
+                  <div class="meta-top">
+                    <span class="photo-tag">⭐ Memory 2 of 6</span>
+                    <span class="tap-hint">Tap photo to zoom ↗</span>
+                  </div>
+                  <h3 class="photo-caption">Brothers Side by Side</h3>
+                  <p class="photo-subtext">Through every laugh, every adventure, and every milestone — no bond in this world is stronger than ours.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 3: photo3.jpg -->
+            <div class="carousel-slide" data-index="2">
+              <div class="polaroid-frame face-focus-3" data-full="photo3.jpg" data-index="2">
+                <div class="img-wrapper">
+                  <img src="photo3.jpg" alt="Abhinaw Memory 3" loading="lazy">
+                  <span class="zoom-badge">🔍 View Full Photo</span>
+                </div>
+                <div class="polaroid-meta">
+                  <div class="meta-top">
+                    <span class="photo-tag">🌟 Memory 3 of 6</span>
+                    <span class="tap-hint">Tap photo to zoom ↗</span>
+                  </div>
+                  <h3 class="photo-caption">Unbreakable Loyalty</h3>
+                  <p class="photo-subtext">A brotherhood built on absolute trust and memories that time will never erase. Always standing right by you.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 4: photo4.jpg -->
+            <div class="carousel-slide" data-index="3">
+              <div class="polaroid-frame face-focus-4" data-full="photo4.jpg" data-index="3">
+                <div class="img-wrapper">
+                  <img src="photo4.jpg" alt="Abhinaw Memory 4" loading="lazy">
+                  <span class="zoom-badge">🔍 View Full Photo</span>
+                </div>
+                <div class="polaroid-meta">
+                  <div class="meta-top">
+                    <span class="photo-tag">🔥 Memory 4 of 6</span>
+                    <span class="tap-hint">Tap photo to zoom ↗</span>
+                  </div>
+                  <h3 class="photo-caption">Fearless & Passionate</h3>
+                  <p class="photo-subtext">Your drive, fire, and unstoppable spirit will take you to heights you haven't even dreamed of yet. Go get it!</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 5: photo5.jpg -->
+            <div class="carousel-slide" data-index="4">
+              <div class="polaroid-frame face-focus-5" data-full="photo5.jpg" data-index="4">
+                <div class="img-wrapper">
+                  <img src="photo5.jpg" alt="Abhinaw Memory 5" loading="lazy">
+                  <span class="zoom-badge">🔍 View Full Photo</span>
+                </div>
+                <div class="polaroid-meta">
+                  <div class="meta-top">
+                    <span class="photo-tag">✨ Memory 5 of 6</span>
+                    <span class="tap-hint">Tap photo to zoom ↗</span>
+                  </div>
+                  <h3 class="photo-caption">Golden Throwback Days</h3>
+                  <p class="photo-subtext">From the innocent little boy to a handsome 18-year-old young man — watching you grow is my greatest pride and joy.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 6: photo6.jpg -->
+            <div class="carousel-slide" data-index="5">
+              <div class="polaroid-frame face-focus-6" data-full="photo6.jpg" data-index="5">
+                <div class="img-wrapper">
+                  <img src="photo6.jpg" alt="Abhinaw Memory 6" loading="lazy">
+                  <span class="zoom-badge">🔍 View Full Photo</span>
+                </div>
+                <div class="polaroid-meta">
+                  <div class="meta-top">
+                    <span class="photo-tag">👑 Memory 6 of 6</span>
+                    <span class="tap-hint">Tap photo to zoom ↗</span>
+                  </div>
+                  <h3 class="photo-caption">Class, Swagger & The Future</h3>
+                  <p class="photo-subtext">Stepping into 18 looking sharp, confident, and ready to conquer adulthood. The entire world is waiting for your legacy!</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <button class="carousel-btn next-btn" id="car-next" aria-label="Next Slide">&#10095;</button>
+        </div>
+
+        <!-- Thumbnail selector bar -->
+        <div class="thumb-selector" id="thumb-bar">
+          <div class="thumb-item active" data-thumb="0" title="Memory 1"><img src="photo1.jpg" alt="Thumb 1"></div>
+          <div class="thumb-item" data-thumb="1" title="Memory 2"><img src="photo2.jpg" alt="Thumb 2"></div>
+          <div class="thumb-item" data-thumb="2" title="Memory 3"><img src="photo3.jpg" alt="Thumb 3"></div>
+          <div class="thumb-item" data-thumb="3" title="Memory 4"><img src="photo4.jpg" alt="Thumb 4"></div>
+          <div class="thumb-item" data-thumb="4" title="Memory 5"><img src="photo5.jpg" alt="Thumb 5"></div>
+          <div class="thumb-item" data-thumb="5" title="Memory 6"><img src="photo6.jpg" alt="Thumb 6"></div>
+        </div>
+
+        <div class="action-wrap">
+          <button class="primary-btn" data-next>
+            <span>Time to Make a Wish 🎂</span>
+            <span class="btn-arrow">🕯️</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 4: Interactive Birthday Cake Ceremony (Animated!) -->
+    <section class="story-step" data-step="4">
+      <div class="glass-card cake-step-card">
+        <div class="card-icon-pill">🎂</div>
+        <span class="step-num">MAKE A WISH</span>
+        <h2 class="section-title">The 18th Birthday Cake</h2>
+        <p class="card-subtitle">Close your eyes, think of your biggest dream, and blow out the candles!</p>
+
+        <!-- Animated Cake Illustration & Candles -->
+        <div class="cake-stage" id="cake-stage">
+          <!-- Floating birthday sparks -->
+          <div class="cake-sparkles" aria-hidden="true">
+            <span class="c-spark s1">✦</span>
+            <span class="c-spark s2">★</span>
+            <span class="c-spark s3">✦</span>
+            <span class="c-spark s4">★</span>
+          </div>
+
+          <div class="birthday-cake">
+            <!-- Candles on top tier -->
+            <div class="candles-row" id="candles-group">
+              <div class="candle">
+                <div class="flame"></div>
+                <div class="smoke"></div>
+                <div class="wick"></div>
+                <div class="candle-stick"></div>
+              </div>
+              <div class="candle center-candle">
+                <div class="flame"></div>
+                <div class="smoke"></div>
+                <div class="wick"></div>
+                <div class="candle-stick gold-stick"></div>
+              </div>
+              <div class="candle">
+                <div class="flame"></div>
+                <div class="smoke"></div>
+                <div class="wick"></div>
+                <div class="candle-stick"></div>
+              </div>
+            </div>
+
+            <!-- Cake Tiers -->
+            <div class="cake-tier tier-top">
+              <div class="frosting-drips"></div>
+              <span class="tier-number">18</span>
+            </div>
+            <div class="cake-tier tier-middle">
+              <div class="frosting-drips"></div>
+              <span class="tier-text">HAPPY BIRTHDAY</span>
+            </div>
+            <div class="cake-tier tier-bottom">
+              <div class="frosting-drips"></div>
+              <span class="tier-decor">✦ ABHINAW ✦</span>
+            </div>
+            <div class="cake-plate"></div>
+          </div>
+        </div>
+
+        <!-- Wish Confirmation Banner (Hidden until blown) -->
+        <div class="wish-granted-banner" id="wish-banner" hidden>
+          <div class="wish-check">✨ WISH SENT TO THE UNIVERSE! ✨</div>
+          <p>May every single dream you wished for come true this year!</p>
+        </div>
+
+        <div class="cake-actions">
+          <button class="primary-btn blow-btn" id="btn-blow-candles">
+            <span id="blow-btn-text">Make a Wish & Blow Candles 🕯️</span>
+          </button>
+          
+          <button class="secondary-btn" id="btn-after-cake" data-next hidden>
+            <span>See the Grand Finale Celebration 🎉</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 5: Grand Finale Celebration -->
+    <section class="story-step" data-step="5">
+      <div class="glass-card finale-card">
+        <div class="confetti-emoji-row">🎊 🥳 🎂 🎁 🎆</div>
+        
+        <div class="big-age-circle">
+          <span class="age-num">18</span>
+          <span class="age-label">YEARS OLD</span>
+        </div>
+
+        <h2 class="finale-headline">
+          HAPPY 18TH BIRTHDAY,
+          <br><span class="gold-gradient" data-name>ABHINAW</span>!
+        </h2>
+
+        <p class="finale-message">
+          Welcome to the world of endless opportunities, freedom, and bold new adventures.
+          Stay humble, stay hungry, keep that radiant smile shining, and conquer every height.
+          <br><strong>The world is yours, brother! 🌍✨</strong>
+        </p>
+
+        <!-- Sign-off badge -->
+        <div class="signature-box">
+          <span class="sig-label">Always with endless love & pride,</span>
+          <h3 class="sig-name" data-from>Ujjawal Singh</h3>
+          <span class="sig-heart">💛🫂</span>
+        </div>
+
+        <!-- Interactive Celebration Buttons -->
+        <div class="finale-interactive-grid">
+          <button class="action-pill-btn" id="btn-shower-confetti">
+            <span>🎉 Shower Confetti</span>
+          </button>
+          <button class="action-pill-btn" id="btn-birthday-chime">
+            <span>🎵 Play Birthday Tune</span>
+          </button>
+          <button class="action-pill-btn" id="btn-sparkle-burst">
+            <span>✨ Golden Fireworks</span>
+          </button>
+        </div>
+
+        <div class="replay-wrap">
+          <button class="replay-link" id="btn-restart">
+            &#8634; Experience the surprise again
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Fullscreen Photo Lightbox Modal (Click to View Full Photo) -->
+  <div class="lightbox-modal" id="lightbox" hidden aria-hidden="true">
+    <div class="lightbox-backdrop" id="lightbox-backdrop"></div>
+    <div class="lightbox-content">
+      <button class="lightbox-close" id="lightbox-close" aria-label="Close full photo">&times;</button>
+      
+      <div class="lightbox-img-frame">
+        <img src="" alt="Full view" class="lightbox-img" id="lightbox-img">
+      </div>
+
+      <!-- Caption directly below the full photo -->
+      <div class="lightbox-caption-card">
+        <div class="lightbox-tag" id="lightbox-tag">❤️ Memory 1 of 6</div>
+        <h3 class="lightbox-title" id="lightbox-title">The Million Dollar Smile</h3>
+        <p class="lightbox-desc" id="lightbox-desc">That radiant smile and unmatched energy that brightens up every single room.</p>
+      </div>
+
+      <!-- Quick switcher inside lightbox -->
+      <div class="lightbox-controls">
+        <button class="lightbox-nav-btn" id="lightbox-prev" aria-label="Previous photo">&#10094; Prev</button>
+        <span class="lightbox-counter" id="lightbox-counter">1 / 6</span>
+        <button class="lightbox-nav-btn" id="lightbox-next" aria-label="Next photo">Next &#10095;</button>
+      </div>
     </div>
-  </section>
+  </div>
 
-</main>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
